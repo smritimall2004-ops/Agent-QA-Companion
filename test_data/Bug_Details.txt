@@ -1,0 +1,122 @@
+[Screen Readers-Service Now-Incident-Response Time]: JAWS is reading unavailable after expanding the "Show timing breakdown" button.
+
+User Experience:
+Users who relay on Assistive Technologies would be impacted if JAWS is reading unavailable after expanding the "Show timing breakdown" button.
+
+Test Environment:
+OS: Win 10 Version 1703
+Browser: IE 11
+URL: https://microsoftppe.service-now.com/navpage.do
+Screen Readers: JAWS(18.0.4104)
+
+Repro Steps:
+Step 1: Open JAWS and Navigate to above URL 
+Step 2: Navigate to "All applications" tab list through keyboard TAB and press Enter.
+Step 3: Navigate to "Incident" tab through keyboard TAB and Press Enter.
+Step 4: Navigate to "Create New" button through keyboard TAB and press Enter.
+Step 5: Navigate to "Response Time" through keyboard TAB and press Enter to expand.
+Step 6: Navigate to "Show timing breakdown" button through keyboard TAB and press Enter.
+Step 7: Now verify JAWS behavior on this button after expanding.
+
+Actual Result:
+JAWS is reading unavailable after expanding the "Show timing breakdown" button.
+JAWS is reading it as "unavailable expanded Show timing breakdown button unavailable expanded".
+Refer attachments<MAS 4.2.1_ServiceNow_Response Time.png><MAS 4.2.1_ServiceNow_Response Time.wmv>
+
+Expected Result:
+JAWS should not read the unavailable after expanding the "Show timing breakdown" button.
+JAWS should read it as "Show timing breakdown button expanded".
+Other instances where the same issue repros:
+Issue repros throughout the application.
+========================================================================================
+[RS3-16295]- Outlook fails to Launch through the Action Center
+Pre-requisite:
+MSIT Windows 10 RS2-15063 is installed on a Lenovo T460s
+
+Repro Steps:
+1. Copy RS3 build 16295 locally on C drive
+2. Start the upgrade process by running setup.exe
+3. After the upgrade is complete, launch Windows
+4. Launch Outlook
+5. Compose an email and send it to your own account.
+6. Send another email to the same account
+7. A notification pops up on the right
+8. Launch Action Center and click on Outlook 2016
+
+Actual Behavior- The outlook does not launch in this case. On Windows RS2, the outlook launches without any issues. [Screenshot attached for reference]
+========================================================================================
+EUSE: Windows 10 RS4 : 17134.0.1: Bitlocker found enabled
+
+Logs : \\path\TLogs\11.0.17134\MACBOOK1234-2018-0542
+Repro Steps :-
+1. Deploy Windows 10 RS4 image through WDS
+2. Check for Bitlocker Status
+
+Expected Result :-
+Bitlocker should be OFF
+
+Actual Result:-
+Bitlocker was ON on the device (Issues reproes on 2/3 devices)
+
+Please find the snapshot attached
+========================================================================================
+[Screen readers-ServiceNow-Order Something]: Incorrect role 'radiogroup' is defined for “yes” and “no” radio buttons which are present under the label 'FTE Sponsor(Are you an Employee?)'.
+
+PWD Impact:
+Visually challenged users who rely on Screen readers will be impacted if the incorrect role 'radiogroup' is implemented for the Yes and no radio buttons which are present under the label 'FTE Sponsor (Are you an Employee?)' in the page.
+
+Test Environment:
+OS : Windows 10 ,1909(OS Build 18363.418)
+Browser: Chrome.(Version:78.0.3904.87), Edge Browser
+Url: https://microsofttest.service-now.com/sp?id=sc_cat_item&sys_id=2c5ae6fddb48a7403f0156a5dc9619f0
+
+Repro Steps:
+Step 1: Open the above URL in Chrome/Edge browser with valid credentials.
+Step 2: Order something page will be displayed.
+Step 3: Navigate to “FTE Sponsor” radio button and select “yes” radio button.
+Step 4: Press F12 and verify whether the role is defined correctly for the radio buttons present in the page or not.
+
+Actual Result:
+Incorrect role (Role=”Radiogroup”) is defined for “yes” and “No” radio buttons which are present under the label 'FTE Sponsor (Are you an Employee?)'
+
+Note: Issue reproes to the similar radio buttons wherever appears in the page.
+
+Expected Result:
+Supported role should be defined for the 'Yes' and 'No' radio buttons which are present under the label 'FTE Sponsor (Are you an Employee?)'
+
+MAS Reference:
+MAS 1.3.1 - Info and Relationships
+
+WCAG Reference:
+https://www.w3.org/WAI/WCAG21/Understanding/understanding-techniques
+
+MAS Reference
+
+MAS 4.2.1 - Object Information (33A)
+========================================================================================
+[WDS] - 'Microsoft VPN' client is not installed and unavailable in the 'Network Options'
+
+Repro Steps:
+
+1) Reimage the device with the WDS/PXE image using Reset Device
+2) Login to the device and search for VPN settings.
+3) In the VPN settings page check for the MSFTVPN
+
+Expected Result: 'Microsoft VPN' client is installed successfully and is available in the 'Network Options'
+
+Actual Result: 'Microsoft VPN' client is NOT installed and is available in the 'Network Options'
+========================================================================================
+[TeachingUI]- Language inconsistency in the button for other languages(French/Chinese/German)
+
+Prerequisite:
+1. MS office is installed. Publisher is available.
+2. Channel in the account settings is Microsoft Current Channel (Outering)
+3. Build number is greater than or equal to 16.0.18827.20100.
+4. Set the language French or Chinese as first option from File-options- Language for Publisher app.
+
+Repro steps:
+Launch Publisher and create a new file or open a saved publisher file.
+TUI is anchored below the user profile icon
+Translate the TUI using the translate from Phone.
+Observe the Button Text is reading as Learn(Chinese) or OK(French) instead of " Got it" and "Publisher is being discontinued" instead of "Publisher is retiring"(German)
+========================================================================================

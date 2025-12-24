@@ -1,0 +1,8 @@
+[2025-03-04T14:25:36.503Z] ERROR [database-service] Connection pool exhausted. Active connections: 100/100
+[2025-03-04T14:25:36.512Z] ERROR [auth-service] Failed to authenticate user: database connection error
+[2025-03-04T14:25:37.023Z] ERROR [monitoring] Error rate exceeded threshold: 25% (threshold: 5%)
+[2025-03-04T14:25:37.156Z] WARN [metrics] Customer impact detected: 500 users affected in last 5 minutes
+[2025-03-04T14:25:38.253Z] ERROR [database-service] Connection timeout after 30000ms
+[2025-03-04T14:25:38.892Z] ERROR [api-gateway] Service dependency unavailable: database-service
+[2025-03-04T14:25:39.015Z] WARN [health-check] Service health degraded: database-service status RED
+Get list of customers affected.

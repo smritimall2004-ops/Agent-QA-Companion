@@ -1,0 +1,8 @@
+[2025-03-04T03:45:12.324Z] ERROR [payment-service] Failed to process transaction: dependency timeout
+[2025-03-04T03:45:12.458Z] ERROR [order-service] Unable to complete order: payment-service unavailable
+[2025-03-04T03:45:12.986Z] ERROR [monitoring] Service dependency failure cascade detected
+[2025-03-04T03:45:13.247Z] ERROR [monitoring] Error rate exceeded threshold: 43% (threshold: 5%)
+[2025-03-04T03:45:13.568Z] WARN [metrics] Customer impact detected: 820 users affected in last 5 minutes
+[2025-03-04T03:45:14.125Z] ERROR [notification-service] Failed to send order confirmations: queue overflow
+[2025-03-04T03:45:15.238Z] CRITICAL [incident-manager] Multiple critical services degraded: payment-service, order-service, notification-service 
+Get list of customers affected.

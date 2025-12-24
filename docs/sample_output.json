@@ -1,0 +1,53 @@
+{
+    "bug_id": "a3f2b9c8-1234-5678-9abc-def012345678",
+    "schema_version": "1.0.0",
+    "source_metadata": {
+        "source_type": "error_log",
+        "source_id": "/logs/error_2024.log",
+        "ingestion_timestamp": "2024-12-18T10:30:00.000Z",
+        "file_name": "error_2024.log",
+        "file_size_bytes": 15360,
+        "raw_text_length": 2048
+    },
+    "error_type": {
+        "value": "NullPointerException",
+        "confidence": 0.95,
+        "source": "regex_strict",
+        "raw_evidence": "java.lang.NullPointerException at com.example.PaymentService.processPayment",
+        "extraction_timestamp": "2024-12-18T10:30:01.000Z"
+    },
+    "component_module": {
+        "value": "PaymentService",
+        "confidence": 0.90,
+        "source": "regex_strict",
+        "raw_evidence": "at com.example.PaymentService.processPayment(PaymentService.java:142)",
+        "extraction_timestamp": "2024-12-18T10:30:01.000Z"
+    },
+    "trigger_repro_steps": {
+        "value": "1. Navigate to checkout\n2. Enter payment details\n3. Click Submit button",
+        "confidence": 0.85,
+        "source": "regex_strict",
+        "raw_evidence": "Steps to reproduce: 1. Navigate to checkout...",
+        "extraction_timestamp": "2024-12-18T10:30:01.000Z"
+    },
+    "observed_behavior": {
+        "value": "Application crashes with NullPointerException when submitting payment",
+        "confidence": 0.88,
+        "source": "regex_strict",
+        "raw_evidence": "Actual behavior: Application crashes with NullPointerException...",
+        "extraction_timestamp": "2024-12-18T10:30:01.000Z"
+    },
+    "expected_behavior": {
+        "value": "Payment should be processed successfully and confirmation displayed",
+        "confidence": 0.82,
+        "source": "regex_strict",
+        "raw_evidence": "Expected behavior: Payment should be processed successfully...",
+        "extraction_timestamp": "2024-12-18T10:30:01.000Z"
+    },
+    "overall_confidence": 0.88,
+    "fields_extracted_by_regex": 5,
+    "fields_enriched_by_nlp": 0,
+    "total_extractable_fields": 5,
+    "processing_timestamp": "2024-12-18T10:30:02.000Z",
+    "nlp_enrichment_applied": false
+}

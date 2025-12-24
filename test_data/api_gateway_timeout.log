@@ -1,0 +1,8 @@
+[2025-03-04T08:14:22.127Z] ERROR [api-gateway] Multiple endpoint timeouts detected. Circuit breaker triggered.
+[2025-03-04T08:14:22.245Z] ERROR [api-gateway] Request processing failed: 504 Gateway Timeout
+[2025-03-04T08:14:22.368Z] ERROR [monitoring] Error rate exceeded threshold: 30% (threshold: 5%)
+[2025-03-04T08:14:23.012Z] WARN [metrics] Customer impact detected: 1200 users affected in last 5 minutes
+[2025-03-04T08:14:23.256Z] ERROR [api-gateway] Backend service unresponsive: order-processing-service
+[2025-03-04T08:14:24.125Z] ERROR [health-check] Multiple services reporting degraded performance
+[2025-03-04T08:14:24.987Z] WARN [alerting] Incident escalation triggered: API Gateway critical failure
+Get list of customers affected.

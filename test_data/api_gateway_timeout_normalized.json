@@ -1,0 +1,57 @@
+{
+  "bug_id": "124880a7-f641-4ee5-ab1f-d59fbdeee461",
+  "schema_version": "1.0.0",
+  "source_metadata": {
+    "source_type": "error_log",
+    "source_id": "C:\\Users\\winadminrk\\Pictures\\proj\\Dora\\ingestion_normalization\\test_data\\api_gateway_timeout.log",
+    "ingestion_timestamp": "2025-12-21T08:22:40.319808",
+    "file_name": "api_gateway_timeout.log",
+    "file_size_bytes": 750,
+    "ado_work_item_id": null,
+    "raw_text_length": 742
+  },
+  "error_type": {
+    "value": "504",
+    "confidence": 0.762,
+    "source": "regex_strict",
+    "raw_evidence": "Z] ERROR [api-gateway] Request processing failed: 504 Gateway Timeout\n[2025-03-04T08:14:22.368Z] ERROR ",
+    "extraction_timestamp": "2025-12-21T08:22:40.326887"
+  },
+  "component_module": {
+    "value": "api-gateway",
+    "confidence": 1.0,
+    "source": "regex_strict",
+    "raw_evidence": "[2025-03-04T08:14:22.127Z] ERROR [api-gateway] Multiple endpoint timeouts detected. Circuit bre",
+    "extraction_timestamp": "2025-12-21T08:22:40.326936"
+  },
+  "trigger_repro_steps": {
+    "value": "[2025-03-04T08:14:22.127Z] ERROR [api-gateway] Multiple endpoint timeouts detected. Circuit breaker triggered.\n[2025-03-04T08:14:22.245Z] ERROR [api-gateway] Request processing failed: 504 Gateway Timeout\n[2025-03-04T08:14:22.368Z] ERROR [monitoring] Error rate exceeded threshold: 30% (threshold: 5%)\n[2025-03-04T08:14:23.012Z] WARN [metrics] Customer impact detected: 1200 users affected in last 5 minutes\n[2025-03-04T08:14:23.256Z] ERROR [api-gateway] Backend service unresponsive: order-processing-service\n[2025-03-04T08:14:24.125Z] ERROR [health-check] Multiple services reporting degraded performance\n[2025-03-04T08:14:24.987Z] WARN [alerting] Incident escalation triggered: API Gateway critical failure",
+    "confidence": 0.47,
+    "source": "regex_loose",
+    "raw_evidence": "[2025-03-04T08:14:22.127Z] ERROR [api-gateway] Multiple endpoint timeouts detected. Circuit breaker triggered.\n[2025-03-04T08:14:22.245Z] ERROR [api-gateway] Request processing failed: 504 Gateway Timeout\n[2025-03-04T08:14:22.368Z] ERROR [monitoring] Error rate exceeded threshold: 30% (threshold: 5%)\n[2025-03-04T08:14:23.012Z] WARN [metrics] Customer impact detected: 1200 users affected in last 5 minutes\n[2025-03-04T08:14:23.256Z] ERROR [api-gateway] Backend service unresponsive: order-proces...",
+    "extraction_timestamp": "2025-12-21T08:22:40.326959"
+  },
+  "observed_behavior": {
+    "value": "Customer impact detected: 1200 users affected in last 5 minutes",
+    "confidence": 0.905,
+    "source": "regex_strict",
+    "raw_evidence": "ld: 5%)\n[2025-03-04T08:14:23.012Z] WARN [metrics] Customer impact detected: 1200 users affected in last 5 minutes\n[2025-03-04T08:14:23.256Z] ERROR [api-gateway] Ba",
+    "extraction_timestamp": "2025-12-21T08:22:40.326976"
+  },
+  "expected_behavior": {
+    "value": "30% (threshold: 5%)",
+    "confidence": 0.435,
+    "source": "regex_loose",
+    "raw_evidence": "ERROR [monitoring] Error rate exceeded threshold: 30% (threshold: 5%)\n[2025-03-04T08:14:23.012Z] WARN [metrics] Custome",
+    "extraction_timestamp": "2025-12-21T08:22:40.326992"
+  },
+  "severity": null,
+  "environment": null,
+  "failure_classification": null,
+  "overall_confidence": 0.7144,
+  "fields_extracted_by_regex": 5,
+  "fields_enriched_by_nlp": 0,
+  "total_extractable_fields": 5,
+  "processing_timestamp": "2025-12-21T08:22:40.327514",
+  "nlp_enrichment_applied": false
+}

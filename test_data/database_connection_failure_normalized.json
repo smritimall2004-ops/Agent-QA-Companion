@@ -1,0 +1,57 @@
+{
+  "bug_id": "cd9e0d7b-de3b-43c3-beff-da834aee76d8",
+  "schema_version": "1.0.0",
+  "source_metadata": {
+    "source_type": "error_log",
+    "source_id": "C:\\Users\\winadminrk\\Pictures\\proj\\Dora\\ingestion_normalization\\test_data\\database_connection_failure.log",
+    "ingestion_timestamp": "2025-12-21T08:22:40.335309",
+    "file_name": "database_connection_failure.log",
+    "file_size_bytes": 733,
+    "ado_work_item_id": null,
+    "raw_text_length": 725
+  },
+  "error_type": {
+    "value": "Connection pool exhausted",
+    "confidence": 0.953,
+    "source": "regex_strict",
+    "raw_evidence": "025-03-04T14:25:36.503Z] ERROR [database-service] Connection pool exhausted. Active connections: 100/100\n[2025-03-04T14:25:36",
+    "extraction_timestamp": "2025-12-21T08:22:40.337956"
+  },
+  "component_module": {
+    "value": "database-service",
+    "confidence": 1.0,
+    "source": "regex_strict",
+    "raw_evidence": "[2025-03-04T14:25:36.503Z] ERROR [database-service] Connection pool exhausted. Active connections: 1",
+    "extraction_timestamp": "2025-12-21T08:22:40.337972"
+  },
+  "trigger_repro_steps": {
+    "value": "[2025-03-04T14:25:36.503Z] ERROR [database-service] Connection pool exhausted. Active connections: 100/100\n[2025-03-04T14:25:36.512Z] ERROR [auth-service] Failed to authenticate user: database connection error\n[2025-03-04T14:25:37.023Z] ERROR [monitoring] Error rate exceeded threshold: 25% (threshold: 5%)\n[2025-03-04T14:25:37.156Z] WARN [metrics] Customer impact detected: 500 users affected in last 5 minutes\n[2025-03-04T14:25:38.253Z] ERROR [database-service] Connection timeout after 30000ms\n[2025-03-04T14:25:38.892Z] ERROR [api-gateway] Service dependency unavailable: database-service\n[2025-03-04T14:25:39.015Z] WARN [health-check] Service health degraded: database-service status RED",
+    "confidence": 0.47,
+    "source": "regex_loose",
+    "raw_evidence": "[2025-03-04T14:25:36.503Z] ERROR [database-service] Connection pool exhausted. Active connections: 100/100\n[2025-03-04T14:25:36.512Z] ERROR [auth-service] Failed to authenticate user: database connection error\n[2025-03-04T14:25:37.023Z] ERROR [monitoring] Error rate exceeded threshold: 25% (threshold: 5%)\n[2025-03-04T14:25:37.156Z] WARN [metrics] Customer impact detected: 500 users affected in last 5 minutes\n[2025-03-04T14:25:38.253Z] ERROR [database-service] Connection timeout after 30000ms\n...",
+    "extraction_timestamp": "2025-12-21T08:22:40.337981"
+  },
+  "observed_behavior": {
+    "value": "Customer impact detected: 500 users affected in last 5 minutes",
+    "confidence": 0.905,
+    "source": "regex_strict",
+    "raw_evidence": "ld: 5%)\n[2025-03-04T14:25:37.156Z] WARN [metrics] Customer impact detected: 500 users affected in last 5 minutes\n[2025-03-04T14:25:38.253Z] ERROR [database-servic",
+    "extraction_timestamp": "2025-12-21T08:22:40.337992"
+  },
+  "expected_behavior": {
+    "value": "25% (threshold: 5%)",
+    "confidence": 0.435,
+    "source": "regex_loose",
+    "raw_evidence": "ERROR [monitoring] Error rate exceeded threshold: 25% (threshold: 5%)\n[2025-03-04T14:25:37.156Z] WARN [metrics] Custome",
+    "extraction_timestamp": "2025-12-21T08:22:40.338015"
+  },
+  "severity": null,
+  "environment": null,
+  "failure_classification": null,
+  "overall_confidence": 0.7525999999999999,
+  "fields_extracted_by_regex": 5,
+  "fields_enriched_by_nlp": 0,
+  "total_extractable_fields": 5,
+  "processing_timestamp": "2025-12-21T08:22:40.338077",
+  "nlp_enrichment_applied": false
+}

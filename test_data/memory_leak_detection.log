@@ -1,0 +1,8 @@
+[2025-03-04T22:37:18.843Z] ERROR [resource-monitor] Memory usage critical: 92% utilized
+[2025-03-04T22:37:18.956Z] ERROR [auth-service] Out of memory error in authentication middleware
+[2025-03-04T22:37:19.023Z] ERROR [monitoring] Error rate exceeded threshold: 18% (threshold: 5%)
+[2025-03-04T22:37:19.156Z] WARN [metrics] Customer impact detected: 350 users affected in last 5 minutes
+[2025-03-04T22:37:19.532Z] ERROR [resource-monitor] Memory growth rate: 15MB/minute
+[2025-03-04T22:37:20.248Z] WARN [container-manager] Container restart initiated due to resource constraints
+[2025-03-04T22:37:20.896Z] ERROR [health-check] Service health status changed to DEGRADED
+Get list of customers affected.

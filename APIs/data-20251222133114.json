@@ -1,0 +1,2239 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Agent QA Tool - Orchestrator API",
+        "description": "Orchestrator API for the Agent QA Tool. Coordinates the workflow between specialized agents for quality assurance automation.",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health Check",
+                "description": "Health check endpoint.\n\nReturns the health status of the API and its dependencies.",
+                "operationId": "health_check_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "Root"
+                ],
+                "summary": "Root",
+                "description": "Root endpoint with API information.",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations": {
+            "post": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Create a new conversation",
+                "description": "Create a new QA conversation.\n\nCreates a new conversation with workflow initialized in INIT stage.\nThe conversation is associated with the authenticated user.",
+                "operationId": "create_conversation_api_conversations_post",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateConversationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateConversationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "List user conversations",
+                "description": "List conversations for the authenticated user.\n\nReturns a paginated list of conversation summaries, sorted by\nmost recently updated first.",
+                "operationId": "list_conversations_api_conversations_get",
+                "parameters": [
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Number of conversations to skip",
+                            "default": 0,
+                            "title": "Skip"
+                        },
+                        "description": "Number of conversations to skip"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "description": "Maximum conversations to return",
+                            "default": 50,
+                            "title": "Limit"
+                        },
+                        "description": "Maximum conversations to return"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversationListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{conversation_id}": {
+            "get": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Get conversation details",
+                "description": "Get detailed information about a conversation.\n\nReturns conversation metadata, workflow stage, and artifact counts.",
+                "operationId": "get_conversation_api_conversations__conversation_id__get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversationDetailResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Delete a conversation",
+                "description": "Delete a conversation and all associated data.\n\nRemoves the conversation, workflow state, tasks, and artifacts.\nThis action cannot be undone.",
+                "operationId": "delete_conversation_api_conversations__conversation_id__delete",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{conversation_id}/input": {
+            "post": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Submit input data",
+                "description": "Submit input data for a conversation.\n\nAccepts error logs (plain text), document references, or\nAzure DevOps work item IDs. Transitions workflow to INPUT_RECEIVED.",
+                "operationId": "submit_input_api_conversations__conversation_id__input_post",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubmitInputRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/{conversation_id}/full": {
+            "get": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Load full conversation data",
+                "description": "Load a conversation with all associated data.\n\nReturns conversation, workflow state, tasks, and artifacts.\nThis is used when viewing/resuming an existing conversation.",
+                "operationId": "load_full_conversation_api_conversations__conversation_id__full_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conversations/check/exists": {
+            "get": {
+                "tags": [
+                    "Conversations",
+                    "Conversations"
+                ],
+                "summary": "Check if user has conversations",
+                "description": "Check if the user has any existing conversations.\n\nUsed by the frontend to determine whether to show\nwelcome screen or conversation list.",
+                "operationId": "check_conversations_exist_api_conversations_check_exists_get",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/status": {
+            "get": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Get workflow status",
+                "description": "Get the current workflow status for a conversation.\n\nReturns the current stage, previous stage, and allowed transitions.",
+                "operationId": "get_workflow_status_api_workflow__conversation_id__status_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkflowStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/approve": {
+            "post": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Approve current stage",
+                "description": "Approve the current stage output.\n\nOnly available at REQUIREMENT_REVIEW and TESTCASE_REVIEW stages.\n- REQUIREMENT_REVIEW → TESTCASE_GENERATION\n- TESTCASE_REVIEW → COMPLETED",
+                "operationId": "approve_stage_api_workflow__conversation_id__approve_post",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApproveResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/refine": {
+            "post": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Request refinement",
+                "description": "Request refinement of the current stage output.\n\nProvides feedback and loops back to generation stage.\nOnly available at REQUIREMENT_REVIEW and TESTCASE_REVIEW stages.",
+                "operationId": "request_refinement_api_workflow__conversation_id__refine_post",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefineRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RefineResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/start-requirement-generation": {
+            "post": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Start requirement generation",
+                "description": "Start the requirement generation process.\n\nCreates a task and invokes the Requirement Analysis Agent.\nAvailable after input has been submitted.",
+                "operationId": "start_requirement_generation_api_workflow__conversation_id__start_requirement_generation_post",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StartGenerationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/start-testcase-generation": {
+            "post": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Start test case generation",
+                "description": "Start the test case generation process.\n\nCreates a task and invokes the Test Case Generation Agent.\nAvailable after requirements have been approved.",
+                "operationId": "start_testcase_generation_api_workflow__conversation_id__start_testcase_generation_post",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StartGenerationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/workflow/{conversation_id}/history": {
+            "get": {
+                "tags": [
+                    "Workflow",
+                    "Workflow"
+                ],
+                "summary": "Get workflow transition history",
+                "description": "Get the transition history for a workflow.\n\nReturns a list of all state transitions with timestamps.",
+                "operationId": "get_workflow_history_api_workflow__conversation_id__history_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/{conversation_id}": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get all artifacts for a conversation",
+                "description": "Get all artifacts (requirements and test cases) for a conversation.\n\nReturns requirements and test cases sorted by creation date.",
+                "operationId": "get_artifacts_api_artifacts__conversation_id__get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArtifactsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/{conversation_id}/requirements": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get requirements for a conversation",
+                "description": "Get all requirements for a conversation.\n\nReturns requirements sorted by version (latest first).",
+                "operationId": "get_requirements_api_artifacts__conversation_id__requirements_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RequirementResponse"
+                                    },
+                                    "title": "Response Get Requirements Api Artifacts  Conversation Id  Requirements Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/{conversation_id}/requirements/latest": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get latest requirement",
+                "description": "Get the latest requirement for a conversation.",
+                "operationId": "get_latest_requirement_api_artifacts__conversation_id__requirements_latest_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RequirementResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/{conversation_id}/testcases": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get test cases for a conversation",
+                "description": "Get all test cases for a conversation.\n\nReturns test cases sorted by creation date.",
+                "operationId": "get_testcases_api_artifacts__conversation_id__testcases_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TestCaseResponse"
+                                    },
+                                    "title": "Response Get Testcases Api Artifacts  Conversation Id  Testcases Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/{conversation_id}/testcases/latest": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get latest test case",
+                "description": "Get the latest test case for a conversation.",
+                "operationId": "get_latest_testcase_api_artifacts__conversation_id__testcases_latest_get",
+                "parameters": [
+                    {
+                        "name": "conversation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Conversation Id"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-User-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestCaseResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/requirements/{requirement_id}": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get requirement by ID",
+                "description": "Get a specific requirement by its ID.",
+                "operationId": "get_requirement_by_id_api_artifacts_requirements__requirement_id__get",
+                "parameters": [
+                    {
+                        "name": "requirement_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Requirement Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RequirementResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/artifacts/testcases/{testcase_id}": {
+            "get": {
+                "tags": [
+                    "Artifacts",
+                    "Artifacts"
+                ],
+                "summary": "Get test case by ID",
+                "description": "Get a specific test case by its ID.",
+                "operationId": "get_testcase_by_id_api_artifacts_testcases__testcase_id__get",
+                "parameters": [
+                    {
+                        "name": "testcase_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Testcase Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestCaseResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApproveResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "previous_stage": {
+                        "type": "string",
+                        "title": "Previous Stage"
+                    },
+                    "current_stage": {
+                        "type": "string",
+                        "title": "Current Stage"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "status",
+                    "previous_stage",
+                    "current_stage",
+                    "message"
+                ],
+                "title": "ApproveResponse",
+                "description": "Response model for approve action."
+            },
+            "ArtifactsResponse": {
+                "properties": {
+                    "requirements": {
+                        "items": {
+                            "$ref": "#/components/schemas/RequirementResponse"
+                        },
+                        "type": "array",
+                        "title": "Requirements"
+                    },
+                    "testcases": {
+                        "items": {
+                            "$ref": "#/components/schemas/TestCaseResponse"
+                        },
+                        "type": "array",
+                        "title": "Testcases"
+                    },
+                    "requirement_count": {
+                        "type": "integer",
+                        "title": "Requirement Count"
+                    },
+                    "testcase_count": {
+                        "type": "integer",
+                        "title": "Testcase Count"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "requirements",
+                    "testcases",
+                    "requirement_count",
+                    "testcase_count"
+                ],
+                "title": "ArtifactsResponse",
+                "description": "Response model for all artifacts."
+            },
+            "ConversationDetailResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "workflow_stage": {
+                        "type": "string",
+                        "title": "Workflow Stage"
+                    },
+                    "is_read_only": {
+                        "type": "boolean",
+                        "title": "Is Read Only"
+                    },
+                    "has_input": {
+                        "type": "boolean",
+                        "title": "Has Input"
+                    },
+                    "requirement_count": {
+                        "type": "integer",
+                        "title": "Requirement Count"
+                    },
+                    "testcase_count": {
+                        "type": "integer",
+                        "title": "Testcase Count"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "title": "Updated At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "workflow_stage",
+                    "is_read_only",
+                    "has_input",
+                    "requirement_count",
+                    "testcase_count",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "ConversationDetailResponse",
+                "description": "Response model for conversation details."
+            },
+            "ConversationListResponse": {
+                "properties": {
+                    "conversations": {
+                        "items": {
+                            "$ref": "#/components/schemas/ConversationSummary"
+                        },
+                        "type": "array",
+                        "title": "Conversations"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "title": "Total"
+                    },
+                    "has_more": {
+                        "type": "boolean",
+                        "title": "Has More"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "conversations",
+                    "total",
+                    "has_more"
+                ],
+                "title": "ConversationListResponse",
+                "description": "Response model for conversation list."
+            },
+            "ConversationSummary": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id",
+                        "description": "Unique identifier for the conversation"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title",
+                        "description": "User-friendly title for the conversation"
+                    },
+                    "workflow_stage": {
+                        "$ref": "#/components/schemas/WorkflowStage",
+                        "description": "Current stage of the workflow"
+                    },
+                    "is_read_only": {
+                        "type": "boolean",
+                        "title": "Is Read Only",
+                        "description": "Whether the conversation is completed",
+                        "default": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "When the conversation was created"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated At",
+                        "description": "When the conversation was last updated"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "workflow_stage",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "ConversationSummary",
+                "description": "Lightweight model for conversation list views.\n\nContains only essential fields needed for displaying\na list of conversations to the user.\n\nAttributes:\n    id: Unique identifier for the conversation.\n    title: User-friendly title for the conversation.\n    workflow_stage: Current stage of the workflow.\n    is_read_only: Whether the conversation is completed.\n    created_at: When the conversation was created.\n    updated_at: When the conversation was last updated."
+            },
+            "CreateConversationRequest": {
+                "properties": {
+                    "title": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 200
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Title",
+                        "description": "Title for the conversation"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "maxLength": 1000
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description",
+                        "description": "Optional description"
+                    }
+                },
+                "type": "object",
+                "title": "CreateConversationRequest",
+                "description": "Request model for creating a conversation."
+            },
+            "CreateConversationResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id",
+                        "description": "Conversation ID"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title",
+                        "description": "Conversation title"
+                    },
+                    "workflow_stage": {
+                        "type": "string",
+                        "title": "Workflow Stage",
+                        "description": "Current workflow stage"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At",
+                        "description": "Creation timestamp"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "workflow_stage",
+                    "created_at"
+                ],
+                "title": "CreateConversationResponse",
+                "description": "Response model for conversation creation."
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "InputType": {
+                "type": "string",
+                "enum": [
+                    "PLAIN_TEXT",
+                    "DOCUMENT",
+                    "AZURE_DEVOPS"
+                ],
+                "title": "InputType",
+                "description": "Enum representing the type of input provided by the user.\n\nAttributes:\n    PLAIN_TEXT: Plain text error logs.\n    DOCUMENT: Uploaded document (PDF, Word, etc.).\n    AZURE_DEVOPS: Azure DevOps work items."
+            },
+            "RefineRequest": {
+                "properties": {
+                    "feedback": {
+                        "type": "string",
+                        "maxLength": 5000,
+                        "minLength": 1,
+                        "title": "Feedback",
+                        "description": "Feedback for refinement"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "feedback"
+                ],
+                "title": "RefineRequest",
+                "description": "Request model for refinement."
+            },
+            "RefineResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "previous_stage": {
+                        "type": "string",
+                        "title": "Previous Stage"
+                    },
+                    "current_stage": {
+                        "type": "string",
+                        "title": "Current Stage"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "refinement_count": {
+                        "type": "integer",
+                        "title": "Refinement Count"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "status",
+                    "previous_stage",
+                    "current_stage",
+                    "message",
+                    "refinement_count"
+                ],
+                "title": "RefineResponse",
+                "description": "Response model for refine action."
+            },
+            "RequirementResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "conversation_id": {
+                        "type": "string",
+                        "title": "Conversation Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "requirement_type": {
+                        "type": "string",
+                        "title": "Requirement Type"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "title": "Priority"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "title": "Version"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "acceptance_criteria": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Acceptance Criteria"
+                    },
+                    "tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Tags"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "title": "Updated At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "conversation_id",
+                    "title",
+                    "content",
+                    "requirement_type",
+                    "priority",
+                    "version",
+                    "status",
+                    "acceptance_criteria",
+                    "tags",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "RequirementResponse",
+                "description": "Response model for requirement."
+            },
+            "StartGenerationResponse": {
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "task_id": {
+                        "type": "string",
+                        "title": "Task Id"
+                    },
+                    "task_type": {
+                        "type": "string",
+                        "title": "Task Type"
+                    },
+                    "message": {
+                        "type": "string",
+                        "title": "Message"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "status",
+                    "task_id",
+                    "task_type",
+                    "message"
+                ],
+                "title": "StartGenerationResponse",
+                "description": "Response model for starting generation."
+            },
+            "SubmitInputRequest": {
+                "properties": {
+                    "input_type": {
+                        "$ref": "#/components/schemas/InputType",
+                        "description": "Type of input (PLAIN_TEXT, DOCUMENT, AZURE_DEVOPS)"
+                    },
+                    "raw_content": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Raw Content",
+                        "description": "Plain text content"
+                    },
+                    "file_name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "File Name",
+                        "description": "File name for document uploads"
+                    },
+                    "work_item_ids": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Work Item Ids",
+                        "description": "Azure DevOps work item IDs"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "input_type"
+                ],
+                "title": "SubmitInputRequest",
+                "description": "Request model for submitting input data."
+            },
+            "TestCaseResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "conversation_id": {
+                        "type": "string",
+                        "title": "Conversation Id"
+                    },
+                    "requirement_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Requirement Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "test_type": {
+                        "type": "string",
+                        "title": "Test Type"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "title": "Priority"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "title": "Version"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "preconditions": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Preconditions"
+                    },
+                    "test_steps": {
+                        "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "title": "Test Steps"
+                    },
+                    "expected_results": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Expected Results"
+                    },
+                    "tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Tags"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "title": "Created At"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "title": "Updated At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "conversation_id",
+                    "requirement_id",
+                    "title",
+                    "content",
+                    "test_type",
+                    "priority",
+                    "version",
+                    "status",
+                    "preconditions",
+                    "test_steps",
+                    "expected_results",
+                    "tags",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "TestCaseResponse",
+                "description": "Response model for test case."
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "WorkflowStage": {
+                "type": "string",
+                "enum": [
+                    "INIT",
+                    "INPUT_RECEIVED",
+                    "REQUIREMENT_GENERATION",
+                    "REQUIREMENT_REVIEW",
+                    "TESTCASE_GENERATION",
+                    "TESTCASE_REVIEW",
+                    "COMPLETED"
+                ],
+                "title": "WorkflowStage",
+                "description": "Enum representing the stages of the QA workflow.\n\nThe workflow progresses through these stages in order,\nwith possible loops back for refinement at review stages.\n\nAttributes:\n    INIT: Initial state when conversation is created.\n    INPUT_RECEIVED: User has provided input data (logs/docs/work items).\n    REQUIREMENT_GENERATION: Requirement Analysis Agent is processing.\n    REQUIREMENT_REVIEW: Awaiting human review of generated requirements.\n    TESTCASE_GENERATION: Test Case Generation Agent is processing.\n    TESTCASE_REVIEW: Awaiting human review of generated test cases.\n    COMPLETED: Workflow is complete (read-only)."
+            },
+            "WorkflowStatusResponse": {
+                "properties": {
+                    "conversation_id": {
+                        "type": "string",
+                        "title": "Conversation Id"
+                    },
+                    "current_stage": {
+                        "type": "string",
+                        "title": "Current Stage"
+                    },
+                    "previous_stage": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Previous Stage"
+                    },
+                    "is_at_review": {
+                        "type": "boolean",
+                        "title": "Is At Review"
+                    },
+                    "is_completed": {
+                        "type": "boolean",
+                        "title": "Is Completed"
+                    },
+                    "stage_started_at": {
+                        "type": "string",
+                        "title": "Stage Started At"
+                    },
+                    "transition_count": {
+                        "type": "integer",
+                        "title": "Transition Count"
+                    },
+                    "allowed_transitions": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Allowed Transitions"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "conversation_id",
+                    "current_stage",
+                    "previous_stage",
+                    "is_at_review",
+                    "is_completed",
+                    "stage_started_at",
+                    "transition_count",
+                    "allowed_transitions"
+                ],
+                "title": "WorkflowStatusResponse",
+                "description": "Response model for workflow status."
+            }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+{
+  "bug_id": "13353596-30e1-47e2-b327-1b99c1ef7e8a",
+  "schema_version": "1.0.0",
+  "source_metadata": {
+    "source_type": "error_log",
+    "source_id": "C:\\Users\\winadminrk\\Pictures\\proj\\Dora\\ingestion_normalization\\test_data\\memory_leak_detection.log",
+    "ingestion_timestamp": "2025-12-21T08:22:40.344822",
+    "file_name": "memory_leak_detection.log",
+    "file_size_bytes": 709,
+    "ado_work_item_id": null,
+    "raw_text_length": 701
+  },
+  "error_type": {
+    "value": "Out of memory",
+    "confidence": 0.953,
+    "source": "regex_strict",
+    "raw_evidence": "d\n[2025-03-04T22:37:18.956Z] ERROR [auth-service] Out of memory error in authentication middleware\n[2025-03-04T22",
+    "extraction_timestamp": "2025-12-21T08:22:40.347400"
+  },
+  "component_module": {
+    "value": "resource-monitor",
+    "confidence": 1.0,
+    "source": "regex_strict",
+    "raw_evidence": "[2025-03-04T22:37:18.843Z] ERROR [resource-monitor] Memory usage critical: 92% utilized\n[2025-03-04T",
+    "extraction_timestamp": "2025-12-21T08:22:40.347418"
+  },
+  "trigger_repro_steps": {
+    "value": "[2025-03-04T22:37:18.843Z] ERROR [resource-monitor] Memory usage critical: 92% utilized\n[2025-03-04T22:37:18.956Z] ERROR [auth-service] Out of memory error in authentication middleware\n[2025-03-04T22:37:19.023Z] ERROR [monitoring] Error rate exceeded threshold: 18% (threshold: 5%)\n[2025-03-04T22:37:19.156Z] WARN [metrics] Customer impact detected: 350 users affected in last 5 minutes\n[2025-03-04T22:37:19.532Z] ERROR [resource-monitor] Memory growth rate: 15MB/minute\n[2025-03-04T22:37:20.248Z] WARN [container-manager] Container restart initiated due to resource constraints\n[2025-03-04T22:37:20.896Z] ERROR [health-check] Service health status changed to DEGRADED",
+    "confidence": 0.47,
+    "source": "regex_loose",
+    "raw_evidence": "[2025-03-04T22:37:18.843Z] ERROR [resource-monitor] Memory usage critical: 92% utilized\n[2025-03-04T22:37:18.956Z] ERROR [auth-service] Out of memory error in authentication middleware\n[2025-03-04T22:37:19.023Z] ERROR [monitoring] Error rate exceeded threshold: 18% (threshold: 5%)\n[2025-03-04T22:37:19.156Z] WARN [metrics] Customer impact detected: 350 users affected in last 5 minutes\n[2025-03-04T22:37:19.532Z] ERROR [resource-monitor] Memory growth rate: 15MB/minute\n[2025-03-04T22:37:20.248Z]...",
+    "extraction_timestamp": "2025-12-21T08:22:40.347428"
+  },
+  "observed_behavior": {
+    "value": "Customer impact detected: 350 users affected in last 5 minutes",
+    "confidence": 0.905,
+    "source": "regex_strict",
+    "raw_evidence": "ld: 5%)\n[2025-03-04T22:37:19.156Z] WARN [metrics] Customer impact detected: 350 users affected in last 5 minutes\n[2025-03-04T22:37:19.532Z] ERROR [resource-monito",
+    "extraction_timestamp": "2025-12-21T08:22:40.347437"
+  },
+  "expected_behavior": {
+    "value": "18% (threshold: 5%)",
+    "confidence": 0.435,
+    "source": "regex_loose",
+    "raw_evidence": "ERROR [monitoring] Error rate exceeded threshold: 18% (threshold: 5%)\n[2025-03-04T22:37:19.156Z] WARN [metrics] Custome",
+    "extraction_timestamp": "2025-12-21T08:22:40.347452"
+  },
+  "severity": null,
+  "environment": null,
+  "failure_classification": null,
+  "overall_confidence": 0.7525999999999999,
+  "fields_extracted_by_regex": 5,
+  "fields_enriched_by_nlp": 0,
+  "total_extractable_fields": 5,
+  "processing_timestamp": "2025-12-21T08:22:40.347532",
+  "nlp_enrichment_applied": false
+}

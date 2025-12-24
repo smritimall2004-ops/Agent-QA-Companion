@@ -1,0 +1,57 @@
+{
+  "bug_id": "1cdf6a78-be2f-46b4-99d7-fab98190c0f0",
+  "schema_version": "1.0.0",
+  "source_metadata": {
+    "source_type": "error_log",
+    "source_id": "C:\\Users\\winadminrk\\Pictures\\proj\\Dora\\ingestion_normalization\\test_data\\microservice_cascade_failure.log",
+    "ingestion_timestamp": "2025-12-21T08:22:40.350901",
+    "file_name": "microservice_cascade_failure.log",
+    "file_size_bytes": 789,
+    "ado_work_item_id": null,
+    "raw_text_length": 781
+  },
+  "error_type": {
+    "value": "service unavailable",
+    "confidence": 0.953,
+    "source": "regex_strict",
+    "raw_evidence": "[order-service] Unable to complete order: payment-service unavailable\n[2025-03-04T03:45:12.986Z] ERROR [monitoring] Ser",
+    "extraction_timestamp": "2025-12-21T08:22:40.353976"
+  },
+  "component_module": {
+    "value": "payment-service",
+    "confidence": 1.0,
+    "source": "regex_strict",
+    "raw_evidence": "[2025-03-04T03:45:12.324Z] ERROR [payment-service] Failed to process transaction: dependency timeou",
+    "extraction_timestamp": "2025-12-21T08:22:40.353997"
+  },
+  "trigger_repro_steps": {
+    "value": "[2025-03-04T03:45:12.324Z] ERROR [payment-service] Failed to process transaction: dependency timeout\n[2025-03-04T03:45:12.458Z] ERROR [order-service] Unable to complete order: payment-service unavailable\n[2025-03-04T03:45:12.986Z] ERROR [monitoring] Service dependency failure cascade detected\n[2025-03-04T03:45:13.247Z] ERROR [monitoring] Error rate exceeded threshold: 43% (threshold: 5%)\n[2025-03-04T03:45:13.568Z] WARN [metrics] Customer impact detected: 820 users affected in last 5 minutes\n[2025-03-04T03:45:14.125Z] ERROR [notification-service] Failed to send order confirmations: queue overflow",
+    "confidence": 0.47,
+    "source": "regex_loose",
+    "raw_evidence": "[2025-03-04T03:45:12.324Z] ERROR [payment-service] Failed to process transaction: dependency timeout\n[2025-03-04T03:45:12.458Z] ERROR [order-service] Unable to complete order: payment-service unavailable\n[2025-03-04T03:45:12.986Z] ERROR [monitoring] Service dependency failure cascade detected\n[2025-03-04T03:45:13.247Z] ERROR [monitoring] Error rate exceeded threshold: 43% (threshold: 5%)\n[2025-03-04T03:45:13.568Z] WARN [metrics] Customer impact detected: 820 users affected in last 5 minutes\n[...",
+    "extraction_timestamp": "2025-12-21T08:22:40.354011"
+  },
+  "observed_behavior": {
+    "value": "Customer impact detected: 820 users affected in last 5 minutes",
+    "confidence": 0.905,
+    "source": "regex_strict",
+    "raw_evidence": "ld: 5%)\n[2025-03-04T03:45:13.568Z] WARN [metrics] Customer impact detected: 820 users affected in last 5 minutes\n[2025-03-04T03:45:14.125Z] ERROR [notification-se",
+    "extraction_timestamp": "2025-12-21T08:22:40.354022"
+  },
+  "expected_behavior": {
+    "value": "43% (threshold: 5%)",
+    "confidence": 0.435,
+    "source": "regex_loose",
+    "raw_evidence": "ERROR [monitoring] Error rate exceeded threshold: 43% (threshold: 5%)\n[2025-03-04T03:45:13.568Z] WARN [metrics] Custome",
+    "extraction_timestamp": "2025-12-21T08:22:40.354035"
+  },
+  "severity": null,
+  "environment": null,
+  "failure_classification": null,
+  "overall_confidence": 0.7525999999999999,
+  "fields_extracted_by_regex": 5,
+  "fields_enriched_by_nlp": 0,
+  "total_extractable_fields": 5,
+  "processing_timestamp": "2025-12-21T08:22:40.354096",
+  "nlp_enrichment_applied": false
+}
