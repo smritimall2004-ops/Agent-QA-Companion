@@ -24,6 +24,18 @@ class PatternRegistry:
     # ==========================================================================
     
     ERROR_TYPE_STRICT: List[Tuple[Pattern, float]] = [
+        # Server log format: Strip timestamp and ERROR [service-name] prefix (MUST BE FIRST)
+        (re.compile(r'\[\d{4}-\d{2}-\d{2}T[^\]]+\]\s+(?:ERROR|CRITICAL)\s+\[[^\]]+\]\s+(.+?)(?:\n|$)', re.IGNORECASE), 1.00),
+        
+        # Title/Subject line error patterns (for bug reports) - capture description after ]:
+        (re.compile(r'^\[[^\]]+?\][:\s-]+([A-Z][^:\n]{20,}?)(?:\s+after|\s+when|\s+on|\s+in|\s+through|\n)', re.MULTILINE), 0.93),
+        
+        # Accessibility/Screen Reader Issues
+        (re.compile(r'(Screen\s+Reader[^\]:\n]*(?:issue|error|reading|announcing)[^.\n]{0,50})', re.IGNORECASE), 0.92),
+        (re.compile(r'((?:JAWS|NVDA|VoiceOver)\s+(?:is\s+)?(?:reading|announcing|not\s+announcing)[^.\n]+)', re.IGNORECASE), 0.90),
+        (re.compile(r'(Accessibility\s+(?:issue|violation|error|problem)[^.\n]*)', re.IGNORECASE), 0.90),
+        (re.compile(r'((?:Application|Program)\s+fails?\s+to\s+(?:launch|start|open)[^.\n]*)', re.IGNORECASE), 0.92),
+        
         # Java/Python Exceptions (original patterns)
         (re.compile(r'\b(NullPointerException|NPE)\b', re.IGNORECASE), 0.95),
         (re.compile(r'\b(IndexOutOfBoundsException)\b', re.IGNORECASE), 0.95),
@@ -51,13 +63,10 @@ class PatternRegistry:
         (re.compile(r'(Request\s+processing\s+failed)', re.IGNORECASE), 0.90),
         (re.compile(r'(health\s+(?:status\s+)?(?:degraded|changed\s+to\s+DEGRADED))', re.IGNORECASE), 0.90),
         (re.compile(r'(queue\s+overflow)', re.IGNORECASE), 0.90),
-        
-        # Generic with ERROR/CRITICAL prefix (capture the message after)
-        (re.compile(r'CRITICAL\s+\[[^\]]+\]\s+(.+?)(?:\n|$)', re.IGNORECASE), 0.92),
     ]
     
     ERROR_TYPE_LOOSE: List[Tuple[Pattern, float]] = [
-        # Error patterns from log format: ERROR [service] message
+        # Error patterns from log format: ERROR [service] message (fallback)
         (re.compile(r'ERROR\s+\[[^\]]+\]\s+([^:\n]+)', re.IGNORECASE), 0.70),
         
         # Generic error indicators
@@ -74,6 +83,15 @@ class PatternRegistry:
     # ==========================================================================
     
     COMPONENT_STRICT: List[Tuple[Pattern, float]] = [
+        # Bug report title format: [Component-Product] or [Component]
+        (re.compile(r'^\[([^\]]+?(?:Service\s+Now|ServiceNow)[^\]]*?)\]', re.IGNORECASE | re.MULTILINE), 0.93),
+        (re.compile(r'^\[([A-Za-z][^\]\-:]{2,40}?)\s*-', re.MULTILINE), 0.88),
+        (re.compile(r'(?:Application|Product|System|Tool)[:\s]+([A-Z][A-Za-z0-9\s]{3,30}?)(?:\s+(?:Version|Build|RS\d)|\s*[\n,])', re.IGNORECASE), 0.90),
+        
+        # Screen Reader context (for accessibility bugs)
+        (re.compile(r'Screen\s+Readers?[:\s-]+([A-Za-z0-9][A-Za-z0-9\s.]{3,40}?)(?:\s*[-:]|\n)', re.IGNORECASE), 0.87),
+        (re.compile(r'(?:URL|Website|Portal)[:\s]+https?://([a-z0-9.-]+)', re.IGNORECASE), 0.85),
+        
         # Server log format: [service-name] - extract service name from brackets
         (re.compile(r'ERROR\s+\[([a-zA-Z][\w-]*(?:-[a-zA-Z][\w-]*)*)\]', re.IGNORECASE), 0.95),
         (re.compile(r'CRITICAL\s+\[([a-zA-Z][\w-]*(?:-[a-zA-Z][\w-]*)*)\]', re.IGNORECASE), 0.95),
